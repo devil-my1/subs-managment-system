@@ -3,7 +3,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import Image from "next/image"
 import {
 	Form,
@@ -37,6 +37,14 @@ const authFormSchema = (formType: FormType) => {
 }
 
 export default function AuthForm({ type }: { type: FormType }) {
+	return (
+		<Suspense fallback={<AuthFormFallback type={type} />}>
+			<AuthFormContent type={type} />
+		</Suspense>
+	)
+}
+
+function AuthFormContent({ type }: { type: FormType }) {
 	const path = useSearchParams()
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -233,5 +241,26 @@ export default function AuthForm({ type }: { type: FormType }) {
 				</div>
 			</form>
 		</Form>
+	)
+}
+
+function AuthFormFallback({ type }: { type: FormType }) {
+	return (
+		<div className='min-w-96 space-y-8'>
+			<div>
+				<h1 className='text-2xl font-bold flex items-center gap-3'>
+					<div className='h-10 w-10 rounded-xl bg-linear-to-br from-[#7f13ec] to-purple-900 flex items-center justify-center text-white'>
+						<span className='material-symbols-outlined'>all_inclusive</span>
+					</div>
+					{type === "sign-in" ? "Sign In" : "Create an account"}
+				</h1>
+			</div>
+			<div className='h-11 animate-pulse rounded-xl bg-white/5' />
+			<div className='h-11 animate-pulse rounded-xl bg-white/5' />
+			{type === "sign-up" ? (
+				<div className='h-11 animate-pulse rounded-xl bg-white/5' />
+			) : null}
+			<div className='h-11 animate-pulse rounded-xl bg-white/5' />
+		</div>
 	)
 }
