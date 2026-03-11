@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5050:5050"  # Backend server port
+      - "5050:5050"
     volumes:
       - ./:/app
     working_dir: /app
@@ -20,7 +20,7 @@ services:
         condition: service_healthy
     networks:
       - mms-network
-  
+
   db:
     image: postgres:16
     container_name: mms-postgres
@@ -39,6 +39,7 @@ services:
       start_period: 10s
     networks:
       - mms-network
+
   redis:
     image: redis:7
     container_name: mms-redis
@@ -52,8 +53,8 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - mms-network 
-      
+      - mms-network
+
   cron:
     image: curlimages/curl:8.10.1
     depends_on:
@@ -64,7 +65,7 @@ services:
       - ./scripts:/app/scripts
     networks:
       - mms-network
-      
+
 networks:
   mms-network:
     driver: bridge

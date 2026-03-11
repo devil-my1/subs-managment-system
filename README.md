@@ -2,6 +2,8 @@
 
 This repository now includes a root Docker Compose stack that runs the website behind nginx.
 
+The root [docker-compose.yml](docker-compose.yml) is the primary stack for deployment and full-stack local runs. The backend folder also contains a separate backend-only compose file at [backend/docker-compose.backend.yaml](backend/docker-compose.backend.yaml) for isolated API development.
+
 ## Services
 
 - `nginx`: public entrypoint on port `80`

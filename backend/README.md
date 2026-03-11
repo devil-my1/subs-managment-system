@@ -3,13 +3,15 @@
 Python 3.13 + FastAPI + async SQLAlchemy + PostgreSQL + Alembic (async). Auth via local email/password with JWT. Reminders via Resend. Timezone: Asia/Tokyo (stored UTC).
 
 ## Quick start (Docker)
+- The primary deployment stack for this repository is the root [docker-compose.yml](../docker-compose.yml).
+- This folder also keeps a backend-only local stack in [backend/docker-compose.backend.yaml](docker-compose.backend.yaml).
 - Copy/adjust `.env` (see [backend/.env.example](.env.example)).
 - Bring up services: `./scripts/compose.sh up`
 - Tail logs: `./scripts/compose.sh logs`
 - Run migrations: `./scripts/compose.sh migrate`
 - Run tests: `./.venv/Scripts/python -m pytest -q` (or `pytest -q` if venv active)
 
-Helper script lives at [backend/scripts/compose.sh](scripts/compose.sh). `./scripts/compose.sh help` shows commands (up, build, rebuild, restart, down, ps, logs, migrate, revision <msg>).
+Helper script lives at [backend/scripts/compose.sh](scripts/compose.sh). It runs `docker compose -f docker-compose.backend.yaml ...` for backend-only development. `./scripts/compose.sh help` shows commands (up, build, rebuild, restart, down, ps, logs, migrate, revision <msg>).
 
 ## Endpoints
 Base URL: `http://localhost:5050/api/v1`

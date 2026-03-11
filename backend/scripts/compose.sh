@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT=$(cd -- "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$ROOT"
 
+COMPOSE_FILE="docker-compose.backend.yaml"
+
 usage() {
   cat <<'EOF'
 Usage: scripts/compose.sh <command> [args]
@@ -27,32 +29,32 @@ shift || true
 
 case "$cmd" in
   up)
-    docker compose up -d
+    docker compose -f "$COMPOSE_FILE" up -d
     ;;
   build)
-    docker compose build server
+    docker compose -f "$COMPOSE_FILE" build server
     ;;
   rebuild)
-    docker compose build server && docker compose up -d server
+    docker compose -f "$COMPOSE_FILE" build server && docker compose -f "$COMPOSE_FILE" up -d server
     ;;
   restart)
-    docker compose restart server
+    docker compose -f "$COMPOSE_FILE" restart server
     ;;
   down)
-    docker compose down
+    docker compose -f "$COMPOSE_FILE" down
     ;;
   ps)
-    docker compose ps
+    docker compose -f "$COMPOSE_FILE" ps
     ;;
   logs)
-    docker compose logs -f server
+    docker compose -f "$COMPOSE_FILE" logs -f server
     ;;
   migrate)
-    docker compose exec server alembic upgrade head
+    docker compose -f "$COMPOSE_FILE" exec server alembic upgrade head
     ;;
   revision)
     msg=${1:-"auto"}
-    docker compose exec server alembic revision --autogenerate -m "$msg"
+    docker compose -f "$COMPOSE_FILE" exec server alembic revision --autogenerate -m "$msg"
     ;;
   help|*)
     usage
