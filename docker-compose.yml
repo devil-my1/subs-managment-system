@@ -1,0 +1,117 @@
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: mms-nginx
+    restart: unless-stopped
+    depends_on:
+      frontend:
+        condition: service_started
+      backend:
+        condition: service_started
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - mms-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-/api/v1}
+        INTERNAL_API_URL: ${INTERNAL_API_URL:-http://backend:5050/api/v1}
+    image: my-managment-system-frontend:latest
+    container_name: mms-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-/api/v1}
+      INTERNAL_API_URL: ${INTERNAL_API_URL:-http://backend:5050/api/v1}
+    depends_on:
+      backend:
+        condition: service_started
+    expose:
+      - "3000"
+    networks:
+      - mms-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: my-managment-system-backend:latest
+    container_name: mms-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    expose:
+      - "5050"
+    networks:
+      - mms-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: mms-postgres
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-mms_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5435:5432"
+    networks:
+      - mms-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: mms-redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    ports:
+      - "6379:6379"
+    networks:
+      - mms-network
+
+  cron:
+    image: curlimages/curl:8.10.1
+    container_name: mms-cron
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    depends_on:
+      backend:
+        condition: service_started
+    entrypoint: ["/bin/sh", "/app/scripts/cron-loop.sh"]
+    volumes:
+      - ./backend/scripts:/app/scripts:ro
+    networks:
+      - mms-network
+
+networks:
+  mms-network:
+    driver: bridge
+
+volumes:
+  pgdata:

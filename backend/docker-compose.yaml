@@ -1,0 +1,73 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: my-managment-system-backend:latest
+    container_name: mms-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "5050:5050"  # Backend server port
+    volumes:
+      - ./:/app
+    working_dir: /app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - mms-network
+  
+  db:
+    image: postgres:16
+    container_name: mms-postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d mms_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - mms-network
+  redis:
+    image: redis:7
+    container_name: mms-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - mms-network 
+      
+  cron:
+    image: curlimages/curl:8.10.1
+    depends_on:
+      - server
+    env_file: .env
+    entrypoint: ["/bin/sh", "/app/scripts/cron-loop.sh"]
+    volumes:
+      - ./scripts:/app/scripts
+    networks:
+      - mms-network
+      
+networks:
+  mms-network:
+    driver: bridge
+
+volumes:
+  pgdata:

@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      # Optionally rely on compose only; keeping runner clean
+      docker:
+        image: docker:stable-dind
+        options: --privileged
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Copy env
+        working-directory: backend
+        run: cp .env.example .env
+
+      - name: Build and start stack
+        working-directory: backend
+        run: |
+          docker compose up -d
+          # Wait for API
+          for i in {1..30}; do
+            if curl -sSf http://localhost:5050/api/v1/openapi.json >/dev/null; then
+              echo "API is up"
+              break
+            fi
+            sleep 2
+          done
+
+      - name: Install deps
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        working-directory: backend
+        env:
+          API_URL: http://localhost:5050/api/v1
+        run: pytest -q
