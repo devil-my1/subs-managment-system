@@ -35,7 +35,7 @@ async def register(data: SignUp, db: AsyncSession = Depends(get_db)):
         existing = await db.execute(select(User).where(User.email == data.email))
         if existing.scalar_one_or_none():
             raise HTTPException(
-                status_code=409, detail="Email already registered")
+                status_code=409, detail="An account with this email already exists. Please sign in instead.")
 
         user = User(email=data.email, password_hash=hash_password(
             data.password), name=data.name)
@@ -49,7 +49,7 @@ async def register(data: SignUp, db: AsyncSession = Depends(get_db)):
         raise
     except TypeError:
         raise HTTPException(
-            status_code=400, detail="Invalid registration data")
+            status_code=400, detail="Invalid registration data. Please check your input and try again.")
     except Exception as e:
         auth_logger.exception("user_register_error",
                               extra={"email": data.email})
@@ -69,7 +69,8 @@ async def login(data: SignIn, db: AsyncSession = Depends(get_db)):
         res = await db.execute(select(User).where(User.email == data.email))
         user = res.scalar_one_or_none()
         if not user or not verify_password(data.password, user.password_hash):
-            raise HTTPException(status_code=401, detail="Invalid credentials")
+            raise HTTPException(
+                status_code=401, detail="Incorrect email or password. Please try again.")
         auth_logger.info("user_logged_in", extra={
                          "user_id": str(user.id), "email": user.email})
         return AuthResponse(access_token=create_access_token(str(user.id)), user_name=user.name)
@@ -114,19 +115,20 @@ async def confirm_password_reset(payload: PasswordResetConfirm, db=Depends(get_d
             auth_logger.warning("password_reset_invalid_code", extra={
                                 "email": email, "reason": "no_cache"})
             raise HTTPException(
-                status_code=400, detail="Invalid or expired code")
+                status_code=400, detail="The reset code has expired. Please request a new one.")
 
-        attempts = cached.get("attempts", 0)
-        if cached.get("code") != payload.code:
-            attempts += 1
-            if attempts >= RESET_MAX_ATTEMPTS:
-                await cache_delete_key(key)
-            else:
-                await cache_set_json(key, {"code": cached.get("code"), "attempts": attempts}, ttl=RESET_TTL)
-            auth_logger.warning("password_reset_invalid_code", extra={
-                                "email": email, "attempts": attempts})
+        if not cached.get("verified"):
+            auth_logger.warning("password_reset_not_verified", extra={
+                                "email": email})
             raise HTTPException(
-                status_code=400, detail="Invalid or expired code")
+                status_code=400, detail="Please verify your code first before setting a new password.")
+
+        if cached.get("code") != payload.code:
+            await cache_delete_key(key)
+            auth_logger.warning("password_reset_code_mismatch", extra={
+                                "email": email})
+            raise HTTPException(
+                status_code=400, detail="The reset code is invalid. Please start the process again.")
 
         res = await db.execute(select(User).where(User.email == email))
         user = res.scalar_one_or_none()
@@ -135,7 +137,7 @@ async def confirm_password_reset(payload: PasswordResetConfirm, db=Depends(get_d
             auth_logger.warning(
                 "password_reset_user_not_found", extra={"email": email})
             raise HTTPException(
-                status_code=400, detail="Invalid or expired code")
+                status_code=400, detail="Could not find your account. Please try again.")
 
         user.password_hash = hash_password(payload.new_password)
         await db.commit()
@@ -143,7 +145,7 @@ async def confirm_password_reset(payload: PasswordResetConfirm, db=Depends(get_d
         await cache_delete_key(f"user:{user.id}")
         auth_logger.info("password_reset_success", extra={
                          "user_id": str(user.id), "email": user.email})
-        return {"detail": "Password reset successful"}
+        return {"detail": "Password reset successful. You can now sign in with your new password."}
     except HTTPException:
         raise
     except Exception as e:
@@ -163,24 +165,30 @@ async def verify_password_reset(payload: PasswordResetVerify):
             auth_logger.warning("password_reset_invalid_code", extra={
                                 "email": email, "reason": "no_cache"})
             raise HTTPException(
-                status_code=400, detail="Invalid or expired code")
+                status_code=400, detail="The reset code has expired. Please request a new one.")
 
         attempts = cached.get("attempts", 0)
         if cached.get("code") != payload.code:
             attempts += 1
             if attempts >= RESET_MAX_ATTEMPTS:
                 await cache_delete_key(key)
+                auth_logger.warning("password_reset_max_attempts", extra={
+                                    "email": email, "attempts": attempts})
+                raise HTTPException(
+                    status_code=400, detail="Too many incorrect attempts. Please request a new code.")
             else:
                 await cache_set_json(key, {"code": cached.get("code"), "attempts": attempts}, ttl=RESET_TTL)
+            remaining = RESET_MAX_ATTEMPTS - attempts
             auth_logger.warning("password_reset_invalid_code", extra={
                                 "email": email, "attempts": attempts})
             raise HTTPException(
-                status_code=400, detail="Invalid or expired code")
+                status_code=400,
+                detail=f"Incorrect code. You have {remaining} attempt{'s' if remaining != 1 else ''} remaining.")
 
-        await cache_delete_key(key)
+        await cache_set_json(key, {"code": cached.get("code"), "attempts": 0, "verified": True}, ttl=RESET_TTL)
         auth_logger.info("password_reset_code_verified",
                          extra={"email": email})
-        return {"detail": "Code is valid"}
+        return {"detail": "Code verified successfully."}
     except HTTPException:
         raise
     except Exception as e:
@@ -199,10 +207,10 @@ async def change_password(
     try:
         if not verify_password(payload.old_password, user.password_hash):
             raise HTTPException(
-                status_code=401, detail="Invalid current password")
+                status_code=401, detail="Your current password is incorrect. Please try again.")
         if payload.old_password == payload.new_password:
             raise HTTPException(
-                status_code=400, detail="New password must be different")
+                status_code=400, detail="Your new password must be different from the current one.")
 
         user.password_hash = hash_password(payload.new_password)
         await db.commit()

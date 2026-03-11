@@ -73,7 +73,7 @@ async def create_category(
             await db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="Category name already exists",
+                detail="A category with this name already exists.",
             )
 
         await db.refresh(new_category)
@@ -106,7 +106,7 @@ async def update_category(
         category = res.scalar_one_or_none()
         if not category:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+                status_code=status.HTTP_404_NOT_FOUND, detail="Category not found. It may have been deleted.")
 
         if payload.name is not None:
             category.name = payload.name
@@ -120,7 +120,7 @@ async def update_category(
             await db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="Category name already exists",
+                detail="A category with this name already exists.",
             )
 
         await db.refresh(category)
@@ -152,7 +152,7 @@ async def delete_category(
         category = res.scalar_one_or_none()
         if not category:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+                status_code=status.HTTP_404_NOT_FOUND, detail="Category not found. It may have been deleted.")
 
         await db.delete(category)
         await db.commit()

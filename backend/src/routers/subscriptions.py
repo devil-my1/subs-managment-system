@@ -223,7 +223,8 @@ async def get_subscription(
         )
         sub = res.scalar_one_or_none()
         if not sub:
-            raise HTTPException(404, "Subscription not found")
+            raise HTTPException(
+                404, "Subscription not found. It may have been deleted.")
         subscriptions_logger.info("subscription_fetched", extra={
                                   "user_id": str(user.id), "subscription_id": str(sub.id)})
         return sub
@@ -253,7 +254,8 @@ async def update_subscription(
         )
         sub = res.scalar_one_or_none()
         if not sub:
-            raise HTTPException(404, "Subscription not found")
+            raise HTTPException(
+                404, "Subscription not found. It may have been deleted.")
 
         for k, v in data.model_dump(exclude_unset=True).items():
             setattr(sub, k, v)
@@ -305,7 +307,8 @@ async def delete_subscription(
         )
         sub = res.scalar_one_or_none()
         if not sub:
-            raise HTTPException(404, "Subscription not found")
+            raise HTTPException(
+                404, "Subscription not found. It may have been deleted.")
 
         await db.delete(sub)
         await db.commit()
@@ -339,7 +342,8 @@ async def renew(
         res = await db.execute(select(Subscription).where(Subscription.id == subscription_id, Subscription.user_id == user.id))
         sub = res.scalar_one_or_none()
         if not sub:
-            raise HTTPException(404, "Subscription not found")
+            raise HTTPException(
+                404, "Subscription not found. It may have been deleted.")
 
         paid_at = data.paid_at or date.today()
         amount = data.amount if data.amount is not None else float(sub.amount)
@@ -387,7 +391,8 @@ async def list_payments(
         # ensure ownership
         owned = await db.execute(select(Subscription.id).where(Subscription.id == subscription_id, Subscription.user_id == user.id))
         if not owned.scalar_one_or_none():
-            raise HTTPException(404, "Subscription not found or access denied")
+            raise HTTPException(
+                404, "Subscription not found or you don't have access to it.")
 
         res = await db.execute(
             select(SubscriptionPayment)
@@ -426,7 +431,8 @@ async def add_payment(
         res = await db.execute(select(Subscription).where(Subscription.id == subscription_id, Subscription.user_id == user.id))
         sub = res.scalar_one_or_none()
         if not sub:
-            raise HTTPException(404, "Subscription not found")
+            raise HTTPException(
+                404, "Subscription not found. It may have been deleted.")
 
         payment = SubscriptionPayment(
             user_id=user.id,

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios"
+import axios, { AxiosRequestConfig, AxiosError } from "axios"
 
 const API_BASE =
 	typeof window === "undefined"
@@ -33,11 +33,14 @@ export async function apiFetch<T>(
 		signal: signal ?? undefined
 	}
 
-	const res = await axios(`${API_BASE}${path}`, axiosConfig)
-
-	if (!res.status) {
-		const text = await res.data?.message
-		throw new Error(text || res.statusText)
+	try {
+		const res = await axios(`${API_BASE}${path}`, axiosConfig)
+		return res.data
+	} catch (err) {
+		if (err instanceof AxiosError && err.response) {
+			const detail = err.response.data?.detail
+			throw new Error(detail || `Request failed (${err.response.status})`)
+		}
+		throw err
 	}
-	return res.data
 }

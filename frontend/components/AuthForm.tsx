@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Suspense, useState } from "react"
 import Image from "next/image"
+import { LockKeyhole, Mail, UserRound } from "lucide-react"
 import {
 	Form,
 	FormControl,
@@ -20,6 +21,9 @@ import { login, register } from "@/lib/api/auth.actions"
 import { useRouter, useSearchParams } from "next/navigation"
 
 type FormType = "sign-in" | "sign-up"
+
+const fieldShellClass =
+	"group relative overflow-hidden rounded-2xl border border-border/70 bg-linear-to-br from-surface to-surface-2/95 px-4 py-3 shadow-[0_12px_30px_-22px_rgba(0,0,0,0.95)] transition-all duration-200 hover:border-primary-400/60 hover:shadow-[0_18px_40px_-24px_rgba(127,19,236,0.45)] focus-within:border-primary-300 focus-within:shadow-[0_18px_40px_-24px_rgba(127,19,236,0.55)]"
 
 const authFormSchema = (formType: FormType) => {
 	return z.object({
@@ -104,30 +108,45 @@ function AuthFormContent({ type }: { type: FormType }) {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className='space-y-8 min-w-96'
+				className='w-full max-w-md space-y-8'
 			>
-				<div>
-					<h1 className='text-2xl font-bold flex items-center gap-3'>
-						<div className='h-10 w-10 rounded-xl bg-linear-to-br from-[#7f13ec] to-purple-900 flex items-center justify-center text-white'>
+				<div className=''>
+					<h1 className='flex items-center gap-3 text-2xl font-bold text-text-strong'>
+						<div className='flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-[#7f13ec] to-purple-900 text-white shadow-[0_12px_24px_-16px_rgba(127,19,236,0.9)]'>
 							<span className='material-symbols-outlined'>all_inclusive</span>
 						</div>
 						{type === "sign-in" ? "Sign In" : "Create an account"}
 					</h1>
+					<p className='text-sm text-text-muted'>
+						{type === "sign-in"
+							? "Pick up where you left off and get back to your dashboard."
+							: "Create your workspace and start tracking every renewal."}
+					</p>
 				</div>
 				{type === "sign-up" && (
 					<FormField
 						control={form.control}
 						name='name'
 						render={({ field }) => (
-							<FormItem>
-								<FormLabel className='shad-form-label'>Name</FormLabel>
-								<FormControl>
-									<Input
-										placeholder='Enter your name'
-										className='shad-input'
-										{...field}
-									/>
-								</FormControl>
+							<FormItem className={fieldShellClass}>
+								<div className='pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary-400/40 to-transparent opacity-0 transition-opacity duration-200 group-focus-within:opacity-100' />
+								<div className='flex items-center gap-3'>
+									<div className='flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-white/4 text-text-muted transition-colors duration-200 group-focus-within:border-primary-400/50 group-focus-within:text-primary-100'>
+										<UserRound className='h-4 w-4' />
+									</div>
+									<div className='min-w-0 flex-1'>
+										<FormLabel className='mb-1 block text-[11px] font-semibold uppercase tracking-[0.24em] text-text-muted/80'>
+											Name
+										</FormLabel>
+										<FormControl>
+											<Input
+												placeholder='Enter your name'
+												className='h-auto border-0 bg-transparent px-0 py-0 text-base text-text-strong placeholder:text-text-muted/55 focus-visible:ring-0 focus-visible:ring-offset-0'
+												{...field}
+											/>
+										</FormControl>
+									</div>
+								</div>
 
 								<FormMessage className='shad-form-message' />
 							</FormItem>
@@ -138,15 +157,25 @@ function AuthFormContent({ type }: { type: FormType }) {
 					control={form.control}
 					name='email'
 					render={({ field }) => (
-						<FormItem>
-							<FormLabel className='shad-form-label'>Email</FormLabel>
-							<FormControl>
-								<Input
-									placeholder='Enter your email'
-									className='shad-input'
-									{...field}
-								/>
-							</FormControl>
+						<FormItem className={fieldShellClass}>
+							<div className='pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary-400/40 to-transparent opacity-0 transition-opacity duration-200 group-focus-within:opacity-100' />
+							<div className='flex items-center gap-3'>
+								<div className='flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-white/4 text-text-muted transition-colors duration-200 group-focus-within:border-primary-400/50 group-focus-within:text-primary-100'>
+									<Mail className='h-4 w-4' />
+								</div>
+								<div className='min-w-0 flex-1'>
+									<FormLabel className='mb-1 block text-[11px] font-semibold uppercase tracking-[0.24em] text-text-muted/80'>
+										Email
+									</FormLabel>
+									<FormControl>
+										<Input
+											placeholder='Enter your email'
+											className='h-auto border-0 bg-transparent px-0 py-0 text-base text-text-strong placeholder:text-text-muted/55 focus-visible:ring-0 focus-visible:ring-offset-0'
+											{...field}
+										/>
+									</FormControl>
+								</div>
+							</div>
 
 							<FormMessage className='shad-form-message' />
 						</FormItem>
@@ -156,16 +185,26 @@ function AuthFormContent({ type }: { type: FormType }) {
 					control={form.control}
 					name='password'
 					render={({ field }) => (
-						<FormItem>
-							<FormLabel className='shad-form-label'>Password</FormLabel>
-							<FormControl>
-								<Input
-									placeholder='Enter your password'
-									className='shad-input'
-									type='password'
-									{...field}
-								/>
-							</FormControl>
+						<FormItem className={fieldShellClass}>
+							<div className='pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary-400/40 to-transparent opacity-0 transition-opacity duration-200 group-focus-within:opacity-100' />
+							<div className='flex items-center gap-3'>
+								<div className='flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-white/4 text-text-muted transition-colors duration-200 group-focus-within:border-primary-400/50 group-focus-within:text-primary-100'>
+									<LockKeyhole className='h-4 w-4' />
+								</div>
+								<div className='min-w-0 flex-1'>
+									<FormLabel className='mb-1 block text-[11px] font-semibold uppercase tracking-[0.24em] text-text-muted/80'>
+										Password
+									</FormLabel>
+									<FormControl>
+										<Input
+											placeholder='Enter your password'
+											className='h-auto border-0 bg-transparent px-0 py-0 text-base text-text-strong placeholder:text-text-muted/55 focus-visible:ring-0 focus-visible:ring-offset-0'
+											type='password'
+											{...field}
+										/>
+									</FormControl>
+								</div>
+							</div>
 
 							<FormMessage className='shad-form-message' />
 						</FormItem>
@@ -175,7 +214,7 @@ function AuthFormContent({ type }: { type: FormType }) {
 				{type === "sign-in" && (
 					<div className='flex justify-end text-sm'>
 						<Link
-							className='text-[#ab9db9] hover:text-[#ab9db9]/40 font-medium transition-colors'
+							className='font-medium text-text-muted transition-colors hover:text-text-muted/40'
 							href='/forgot-password'
 						>
 							Forgot password?
@@ -188,18 +227,26 @@ function AuthFormContent({ type }: { type: FormType }) {
 						control={form.control}
 						name='confirmPassword'
 						render={({ field }) => (
-							<FormItem>
-								<FormLabel className='shad-form-label'>
-									Confirm Password
-								</FormLabel>
-								<FormControl>
-									<Input
-										placeholder='Confirm password'
-										className='shad-input'
-										type='password'
-										{...field}
-									/>
-								</FormControl>
+							<FormItem className={fieldShellClass}>
+								<div className='pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary-400/40 to-transparent opacity-0 transition-opacity duration-200 group-focus-within:opacity-100' />
+								<div className='flex items-center gap-3'>
+									<div className='flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-white/4 text-text-muted transition-colors duration-200 group-focus-within:border-primary-400/50 group-focus-within:text-primary-100'>
+										<LockKeyhole className='h-4 w-4' />
+									</div>
+									<div className='min-w-0 flex-1'>
+										<FormLabel className='mb-1 block text-[11px] font-semibold uppercase tracking-[0.24em] text-text-muted/80'>
+											Confirm Password
+										</FormLabel>
+										<FormControl>
+											<Input
+												placeholder='Confirm password'
+												className='h-auto border-0 bg-transparent px-0 py-0 text-base text-text-strong placeholder:text-text-muted/55 focus-visible:ring-0 focus-visible:ring-offset-0'
+												type='password'
+												{...field}
+											/>
+										</FormControl>
+									</div>
+								</div>
 
 								<FormMessage className='shad-form-message' />
 							</FormItem>
@@ -246,19 +293,19 @@ function AuthFormContent({ type }: { type: FormType }) {
 
 function AuthFormFallback({ type }: { type: FormType }) {
 	return (
-		<div className='min-w-96 space-y-8'>
+		<div className='w-full max-w-md space-y-6'>
 			<div>
-				<h1 className='text-2xl font-bold flex items-center gap-3'>
-					<div className='h-10 w-10 rounded-xl bg-linear-to-br from-[#7f13ec] to-purple-900 flex items-center justify-center text-white'>
+				<h1 className='flex items-center gap-3 text-2xl font-bold text-text-strong'>
+					<div className='flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-[#7f13ec] to-purple-900 text-white shadow-[0_12px_24px_-16px_rgba(127,19,236,0.9)]'>
 						<span className='material-symbols-outlined'>all_inclusive</span>
 					</div>
 					{type === "sign-in" ? "Sign In" : "Create an account"}
 				</h1>
 			</div>
-			<div className='h-11 animate-pulse rounded-xl bg-white/5' />
-			<div className='h-11 animate-pulse rounded-xl bg-white/5' />
+			<div className='h-19.5 animate-pulse rounded-2xl border border-border/70 bg-linear-to-br from-surface to-surface-2/95' />
+			<div className='h-19.5 animate-pulse rounded-2xl border border-border/70 bg-linear-to-br from-surface to-surface-2/95' />
 			{type === "sign-up" ? (
-				<div className='h-11 animate-pulse rounded-xl bg-white/5' />
+				<div className='h-19.5 animate-pulse rounded-2xl border border-border/70 bg-linear-to-br from-surface to-surface-2/95' />
 			) : null}
 			<div className='h-11 animate-pulse rounded-xl bg-white/5' />
 		</div>

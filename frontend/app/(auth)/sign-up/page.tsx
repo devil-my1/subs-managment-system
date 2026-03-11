@@ -1,6 +1,10 @@
 "use client"
 
-import AuthForm from "@/components/AuthForm"
+import dynamic from "next/dynamic"
+
+const AuthForm = dynamic(() => import("@/components/AuthForm"), {
+	ssr: false
+})
 
 export default function SignUp() {
 	return (

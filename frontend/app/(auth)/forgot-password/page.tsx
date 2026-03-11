@@ -1,6 +1,13 @@
 "use client"
 
-import ForgotPasswordForm from "@/components/ForgotPasswordForm"
+import dynamic from "next/dynamic"
+
+const ForgotPasswordForm = dynamic(
+	() => import("@/components/ForgotPasswordForm"),
+	{
+		ssr: false
+	}
+)
 
 export default function ForgotPasswordPage() {
 	return (
