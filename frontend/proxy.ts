@@ -18,7 +18,6 @@ export function proxy(req: NextRequest) {
 	if (!token && !isPublic) {
 		const loginUrl = req.nextUrl.clone()
 		loginUrl.pathname = "/sign-in"
-		loginUrl.searchParams.set("next", pathname)
 		return NextResponse.redirect(loginUrl)
 	}
 
