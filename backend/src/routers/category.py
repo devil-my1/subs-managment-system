@@ -21,7 +21,7 @@ router = APIRouter(prefix="/categories", tags=["categories"])
 GENERIC_ERROR = "Something went wrong. Please try again later."
 
 
-@router.get("/", response_model=CategoryListResponse)
+@router.get("", response_model=CategoryListResponse)
 async def get_categories(
         user=Depends(get_current_user),
         db: AsyncSession = Depends(get_db),
@@ -48,7 +48,7 @@ async def get_categories(
 
 
 @router.post(
-    "/",
+    "",
     response_model=CategoryModificationResponse,
     status_code=status.HTTP_201_CREATED,
 )
