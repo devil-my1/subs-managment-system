@@ -121,34 +121,32 @@ export default function DashboardPage() {
 				onOpenChange={setOpen}
 				onSuccess={fetchData}
 			/>
-			<div className='flex flex-col md:flex-row md:items-end justify-between  gap-4'>
+			<div className='flex flex-col sm:flex-row sm:items-end justify-between gap-4'>
 				<div className='flex flex-col gap-1'>
-					<h2 className='flex justify-center items-center gap-3 text-white text-3xl md:text-4xl font-black tracking-tight'>
+					<h2 className='flex flex-wrap items-center gap-2 text-white text-2xl sm:text-3xl md:text-4xl font-black tracking-tight'>
 						Welcome,
 						{userLoading ? (
 							<Loader2 className='animate-spin h-5 w-5 text-primary-400' />
 						) : (
-							<span className=' tracking-widest  text-primary-400'>
+							<span className='tracking-widest text-primary-400'>
 								{user?.name || "User"}
 							</span>
 						)}
 						!
 					</h2>
-					<p className='text-[#ab9db9] text-base font-normal'>
+					<p className='text-[#ab9db9] text-sm font-normal'>
 						Here is your current overview
 					</p>
 				</div>
-				<div>
-					<Button
-						className='group flex items-center justify-center p-6'
-						onClick={() => setOpen(true)}
-					>
-						<span className='material-symbols-outlined text-lg group-hover:rotate-90 transition-transform'>
-							add
-						</span>
-						<span className='truncate'>Add Subscription</span>
-					</Button>
-				</div>
+				<Button
+					className='group flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-5'
+					onClick={() => setOpen(true)}
+				>
+					<span className='material-symbols-outlined text-lg group-hover:rotate-90 transition-transform'>
+						add
+					</span>
+					<span>Add Subscription</span>
+				</Button>
 			</div>
 
 			{error && <p className='text-red-400 text-sm'>{error}</p>}

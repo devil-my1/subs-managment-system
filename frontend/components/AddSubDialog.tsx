@@ -215,7 +215,7 @@ export default function AddSubDialog({
 			open={open}
 			onOpenChange={handleOpenChange}
 		>
-			<DialogContent className='max-w-[480px] max-h-[90vh] overflow-y-auto bg-surface-dark backdrop-blur border border-border-dark'>
+			<DialogContent className='w-[calc(100vw-2rem)] sm:max-w-[480px] max-h-[90dvh] overflow-y-auto bg-surface-dark backdrop-blur border border-border-dark rounded-2xl'>
 				<DialogHeader>
 					<DialogTitle className='text-xl font-bold text-foreground border-b-2 border-border-dark pb-4 '>
 						{dialogTitle}

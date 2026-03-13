@@ -112,79 +112,81 @@ export function SubTable<TData, TValue>({
 	})
 
 	return (
-		<div className='w-full  flex flex-col gap-4'>
-			<div className='overflow-hidden rounded-md '>
-				<Table>
-					<TableHeader>
-						{table.getHeaderGroups().map(headerGroup => (
-							<TableRow key={headerGroup.id}>
-								{headerGroup.headers.map(header => {
-									return (
-										<TableHead
-											className=''
-											key={header.id}
-										>
-											{header.isPlaceholder
-												? null
-												: flexRender(
-														header.column.columnDef.header,
-														header.getContext()
-													)}
-										</TableHead>
-									)
-								})}
-							</TableRow>
-						))}
-					</TableHeader>
-					<TableBody>
-						{table.getRowModel().rows?.length ? (
-							table.getRowModel().rows.map(row => (
-								<TableRow
-									key={row.id}
-									data-state={row.getIsSelected() && "selected"}
-									onClick={
-										onRowClick ? () => onRowClick(row.original) : undefined
-									}
-									onKeyDown={event => {
-										if (!onRowClick) return
-										if (event.key === "Enter" || event.key === " ") {
-											event.preventDefault()
-											onRowClick(row.original)
-										}
-									}}
-									tabIndex={onRowClick ? 0 : undefined}
-									className={cn(
-										"transition-colors",
-										onRowClick
-											? "cursor-pointer hover:bg-white/5"
-											: "hover:bg-white/5/50"
-									)}
-								>
-									{row.getVisibleCells().map(cell => (
-										<TableCell
-											className='pl-2'
-											key={cell.id}
-										>
-											{flexRender(
-												cell.column.columnDef.cell,
-												cell.getContext()
-											)}
-										</TableCell>
-									))}
+		<div className='w-full flex flex-col gap-4'>
+			<div className='overflow-x-auto rounded-md'>
+				<div className='min-w-[500px]'>
+					<Table>
+						<TableHeader>
+							{table.getHeaderGroups().map(headerGroup => (
+								<TableRow key={headerGroup.id}>
+									{headerGroup.headers.map(header => {
+										return (
+											<TableHead
+												className=''
+												key={header.id}
+											>
+												{header.isPlaceholder
+													? null
+													: flexRender(
+															header.column.columnDef.header,
+															header.getContext()
+														)}
+											</TableHead>
+										)
+									})}
 								</TableRow>
-							))
-						) : (
-							<TableRow>
-								<TableCell
-									colSpan={resolvedColumnsWithSelect.length}
-									className='h-24 text-center'
-								>
-									No results.
-								</TableCell>
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
+							))}
+						</TableHeader>
+						<TableBody>
+							{table.getRowModel().rows?.length ? (
+								table.getRowModel().rows.map(row => (
+									<TableRow
+										key={row.id}
+										data-state={row.getIsSelected() && "selected"}
+										onClick={
+											onRowClick ? () => onRowClick(row.original) : undefined
+										}
+										onKeyDown={event => {
+											if (!onRowClick) return
+											if (event.key === "Enter" || event.key === " ") {
+												event.preventDefault()
+												onRowClick(row.original)
+											}
+										}}
+										tabIndex={onRowClick ? 0 : undefined}
+										className={cn(
+											"transition-colors",
+											onRowClick
+												? "cursor-pointer hover:bg-white/5"
+												: "hover:bg-white/5/50"
+										)}
+									>
+										{row.getVisibleCells().map(cell => (
+											<TableCell
+												className='pl-2'
+												key={cell.id}
+											>
+												{flexRender(
+													cell.column.columnDef.cell,
+													cell.getContext()
+												)}
+											</TableCell>
+										))}
+									</TableRow>
+								))
+							) : (
+								<TableRow>
+									<TableCell
+										colSpan={resolvedColumnsWithSelect.length}
+										className='h-24 text-center'
+									>
+										No results.
+									</TableCell>
+								</TableRow>
+							)}
+						</TableBody>
+					</Table>
+				</div>
 			</div>
 			<div
 				className={cn(

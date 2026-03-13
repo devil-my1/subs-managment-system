@@ -219,27 +219,28 @@ export default function AnalyticsPage() {
 							</span>
 							Analytics
 						</div>
-						<h1 className='text-3xl font-black tracking-tight text-white'>
+						<h1 className='text-2xl sm:text-3xl font-black tracking-tight text-white'>
 							Spending Analytics
 						</h1>
-						<p className='text-[#ab9db9] text-base'>
+						<p className='text-[#ab9db9] text-sm sm:text-base'>
 							Track your subscription costs and trends over time.
 						</p>
 					</div>
-					<div className='flex flex-wrap gap-3 rounded-xl border border-border bg-surface-2 p-2 shadow-sm'>
+					<div className='flex flex-wrap gap-2 rounded-xl border border-border bg-surface-2 p-2 shadow-sm self-start'>
 						<Button
 							variant='ghost'
-							className='flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-text'
+							className='flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm text-text'
 						>
-							<span className='material-symbols-outlined text-[20px] text-[#ab9db9]'>
+							<span className='material-symbols-outlined text-[18px] text-[#ab9db9]'>
 								calendar_month
 							</span>
-							Last 12 Months
+							<span className='hidden sm:inline'>Last 12 Months</span>
+							<span className='sm:hidden'>12 Mo</span>
 							<span className='material-symbols-outlined text-[16px] text-[#ab9db9]'>
 								expand_more
 							</span>
 						</Button>
-						<div className='h-8 w-px self-center bg-border' />
+						<div className='h-8 w-px self-center bg-border hidden sm:block' />
 						<div className='flex rounded-lg bg-[#1b1425] p-1'>
 							<Button
 								variant={baseCurrency === "USD" ? "default" : "ghost"}
@@ -258,7 +259,7 @@ export default function AnalyticsPage() {
 								JPY (¥)
 							</Button>
 						</div>
-						<div className='h-8 w-px self-center bg-border' />
+						<div className='h-8 w-px self-center bg-border hidden sm:block' />
 						<Button
 							variant='ghost'
 							size='icon'

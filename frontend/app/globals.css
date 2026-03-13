@@ -197,4 +197,21 @@ body {
 	.auth_form {
 		@apply flex items-center justify-center text-white px-4;
 	}
+
+	/* ===== MOBILE UTILITIES */
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* Safe area padding for notched devices */
+	.safe-top {
+		padding-top: env(safe-area-inset-top);
+	}
+	.safe-bottom {
+		padding-bottom: env(safe-area-inset-bottom);
+	}
 }

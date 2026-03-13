@@ -158,9 +158,9 @@ export default function SubscriptionsPage() {
 						.finally(() => setLoading(false))
 				}}
 			/>
-			<div className='space-y-8 flex flex-col md:flex-row md:items-end justify-between mb-6'>
+			<div className='flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6'>
 				<div>
-					<h1 className='text-3xl font-black tracking-tight text-white mb-1'>
+					<h1 className='text-2xl sm:text-3xl font-black tracking-tight text-white mb-1'>
 						My Subscriptions
 					</h1>
 					<p className='text-[#ab9db9] text-sm'>
@@ -169,7 +169,7 @@ export default function SubscriptionsPage() {
 				</div>
 				<Button
 					onClick={() => setOpen(true)}
-					className='flex self-start items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-6! rounded-lg font-semibold shadow-[0_0_15px_rgba(127,19,236,0.3)] hover:shadow-[0_0_20px_rgba(127,19,236,0.5)]'
+					className='flex items-center justify-center gap-2 w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-5 py-5 rounded-lg font-semibold shadow-[0_0_15px_rgba(127,19,236,0.3)] hover:shadow-[0_0_20px_rgba(127,19,236,0.5)]'
 				>
 					<span className='material-symbols-outlined text-[20px]'>add</span>
 					<span>Add Subscription</span>
