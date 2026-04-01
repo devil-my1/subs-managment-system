@@ -8,9 +8,11 @@ class Settings(BaseSettings):
     JWT_SECRET: str
     JWT_ALG: str = "HS256"
     ACCESS_TOKEN_MINUTES: int = 60 * 24 * 7  # 7 days (fine for your solo app)
+    COOKIE_SECURE: bool = True   # Set to False in .env for local HTTP dev
     INTERNAL_JOB_TOKEN: str     # for cron -> API calls
 
     RESEND_API_KEY: str
+    EXCHANGE_RATE_API_KEY: str
     EMAIL_FROM: str
     # optional: force all emails to your address in dev
     EMAIL_TO_OVERRIDE: str | None = None
