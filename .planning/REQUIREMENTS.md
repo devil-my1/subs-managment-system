@@ -106,16 +106,16 @@
 | SETT-04 | Phase 3 | Pending |
 | SETT-05 | Phase 4 | Pending |
 | SETT-06 | Phase 4 | Pending |
-| SETT-07 | Phase 4 | Pending |
-| SETT-08 | Phase 4 | Pending |
-| SETT-09 | Phase 4 | Pending |
+| SETT-07 | Phase 5 | Pending |
+| SETT-08 | Phase 5 | Pending |
+| SETT-09 | Phase 5 | Pending |
 | SETT-10 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 23 total
 - Mapped to phases: 23
-- Unmapped: 0 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-01*
-*Last updated: 2026-04-01 after initial definition*
+*Last updated: 2026-04-01 after roadmap creation*
