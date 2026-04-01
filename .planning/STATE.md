@@ -66,6 +66,9 @@ Recent decisions affecting current work:
 - PyJWT replaces python-jose; direct bcrypt replaces passlib (SEC-07, SEC-08)
 - slowapi for rate limiting on auth endpoints (SEC-04)
 - Settings page structured as tabbed sections: Account / Notifications / Display
+- [Phase 01 P01]: PyJWT replaces python-jose (CVE-2022-29217); direct bcrypt replaces passlib (unmaintained); $2b$ prefix compatibility maintained
+- [Phase 01 P01]: bcrypt work factor 12; cffi retained for cryptography dep; slowapi pre-added for Plan 4
+- [Phase 01 P01]: COOKIE_SECURE defaults True in Settings; EXCHANGE_RATE_API_KEY required field added
 - [Phase 01]: amount and dates not escaped in email templates (server-generated, not user-supplied)
 - [Phase 01]: renewal_subject() escapes title to close subject-injection XSS vector
 - [Phase 01]: last_error stores only str(e)[:500] — email.body concatenation removed to prevent data leakage to DB
