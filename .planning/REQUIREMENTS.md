@@ -13,8 +13,8 @@
 - [ ] **SEC-02**: JWT cookie is set server-side with HttpOnly and Secure flags
 - [ ] **SEC-03**: Redis cache does not store password hashes
 - [ ] **SEC-04**: Auth endpoints (login, register, password reset) are rate limited
-- [ ] **SEC-05**: Email templates escape all user-supplied HTML (title, URL, dates)
-- [ ] **SEC-06**: `last_error` field stores only the error string, not email body content
+- [x] **SEC-05**: Email templates escape all user-supplied HTML (title, URL, dates)
+- [x] **SEC-06**: `last_error` field stores only the error string, not email body content
 - [ ] **SEC-07**: JWT signing uses PyJWT (replaces unmaintained python-jose)
 - [ ] **SEC-08**: Password hashing uses direct bcrypt (replaces unmaintained passlib)
 
@@ -91,8 +91,8 @@
 | SEC-02 | Phase 1 | Pending |
 | SEC-03 | Phase 1 | Pending |
 | SEC-04 | Phase 1 | Pending |
-| SEC-05 | Phase 1 | Pending |
-| SEC-06 | Phase 1 | Pending |
+| SEC-05 | Phase 1 | Complete |
+| SEC-06 | Phase 1 | Complete |
 | SEC-07 | Phase 1 | Pending |
 | SEC-08 | Phase 1 | Pending |
 | FIX-01 | Phase 2 | Pending |
