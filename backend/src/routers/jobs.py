@@ -77,8 +77,7 @@ async def send_reminders(
                 sent += 1
             except Exception as e:
                 reminder.status = "failed"
-                reminder.last_error = str(
-                    e)[:500] + email.body if 'email' in locals() else str(e)[:500]
+                reminder.last_error = str(e)[:500]
                 failed += 1
 
         await db.commit()
