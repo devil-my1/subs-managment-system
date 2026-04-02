@@ -28,10 +28,10 @@
 
 ### Settings Page — Account
 
-- [ ] **SETT-01**: User can update their display name
-- [ ] **SETT-02**: User can update their email address
-- [ ] **SETT-03**: User can change their password (requires current password)
-- [ ] **SETT-04**: User can delete their account (with confirmation dialog)
+- [x] **SETT-01**: User can update their display name
+- [x] **SETT-02**: User can update their email address
+- [x] **SETT-03**: User can change their password (requires current password)
+- [x] **SETT-04**: User can delete their account (with confirmation dialog)
 
 ### Settings Page — Notifications
 
@@ -100,10 +100,10 @@
 | FIX-03 | Phase 2 | Complete |
 | FIX-04 | Phase 2 | Complete |
 | FIX-05 | Phase 2 | Complete |
-| SETT-01 | Phase 3 | Pending |
-| SETT-02 | Phase 3 | Pending |
-| SETT-03 | Phase 3 | Pending |
-| SETT-04 | Phase 3 | Pending |
+| SETT-01 | Phase 3 | Complete |
+| SETT-02 | Phase 3 | Complete |
+| SETT-03 | Phase 3 | Complete |
+| SETT-04 | Phase 3 | Complete |
 | SETT-05 | Phase 4 | Pending |
 | SETT-06 | Phase 4 | Pending |
 | SETT-07 | Phase 5 | Pending |
