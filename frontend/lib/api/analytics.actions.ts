@@ -33,7 +33,6 @@ export async function retrieveSpendingAnalytics(
 			(data as SpendSummary) ?? { total_spent: 0, currency: "USD", count: 0 }
 		)
 	} catch (error) {
-		console.error("Error retrieving spending analytics:", error)
 		throw error
 	}
 }

@@ -12,7 +12,6 @@ export async function getCategoriesList(): Promise<Category[]> {
 
 		return data
 	} catch (error) {
-		console.error("Error retrieving categories:", error)
 		throw error
 	}
 }
@@ -36,7 +35,6 @@ export async function updateCategory(
 		)
 		return data
 	} catch (error) {
-		console.error("Error updating category:", error)
 		throw error
 	}
 }
@@ -58,7 +56,6 @@ export async function createCategory(
 		if (error instanceof Error && error.message.includes("409")) {
 			throw new Error("Category with this name already exists.")
 		}
-		console.error("Error creating category:", error)
 		throw error
 	}
 }
@@ -74,7 +71,6 @@ export async function deleteCategory(categoryId: string): Promise<void> {
 		})
 		return data
 	} catch (error) {
-		console.error("Error deleting category:", error)
 		throw error
 	}
 }

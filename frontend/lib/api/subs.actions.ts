@@ -19,7 +19,6 @@ export async function retrieveSubscriptionList(): Promise<Subscription[]> {
 		})
 		return data
 	} catch (error) {
-		console.error("Error retrieving subscriptions:", error)
 		throw error
 	}
 }
@@ -40,7 +39,6 @@ export async function retrieveSubscriptionById(
 		)
 		return data
 	} catch (error) {
-		console.error("Error retrieving subscription by ID:", error)
 		throw error
 	}
 }
@@ -59,7 +57,6 @@ export async function createSubscription(
 		})
 		return data
 	} catch (error) {
-		console.error("Error creating subscription:", error)
 		throw error
 	}
 }
@@ -84,7 +81,6 @@ export async function updateSubscription(
 		)
 		return data
 	} catch (error) {
-		console.error("Error updating subscription:", error)
 		throw error
 	}
 }
@@ -105,7 +101,6 @@ export async function deleteSubscription(
 		)
 		return data
 	} catch (error) {
-		console.error("Error deleting subscription:", error)
 		throw error
 	}
 }
