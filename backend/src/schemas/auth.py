@@ -13,9 +13,8 @@ class SignIn(BaseModel):
 
 
 class AuthResponse(BaseModel):
-    access_token: str
     user_name: str
-    token_type: str = "bearer"
+    user_id: str
 
 
 class UserMe(BaseModel):

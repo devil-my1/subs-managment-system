@@ -1,5 +1,4 @@
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends, HTTPException, Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.db.session import get_db
@@ -11,10 +10,10 @@ from uuid import UUID
 from datetime import datetime
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
-
-
-async def get_current_user(db: AsyncSession = Depends(get_db), token: str = Depends(oauth2_scheme)) -> User:
+async def get_current_user(request: Request, db: AsyncSession = Depends(get_db)) -> User:
+    token = request.cookies.get("token")
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
     try:
         payload = decode_token(token)
         user_id = payload["sub"]
@@ -29,7 +28,6 @@ async def get_current_user(db: AsyncSession = Depends(get_db), token: str = Depe
         return User(
             id=UUID(cached["id"]),
             email=cached["email"],
-            password_hash=cached["password_hash"],
             name=name,
             created_at=datetime.fromisoformat(created) if created else None,
         )
@@ -42,7 +40,6 @@ async def get_current_user(db: AsyncSession = Depends(get_db), token: str = Depe
     await cache_set_json(cache_key, {
         "id": str(user.id),
         "email": user.email,
-        "password_hash": user.password_hash,
         "name": user.name or "User",
         "created_at": user.created_at.isoformat() if user.created_at else None,
     }, ttl=settings.CACHE_USER_TTL)
