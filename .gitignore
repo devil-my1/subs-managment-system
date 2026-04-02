@@ -38,3 +38,7 @@ StMS/expo-env.d.ts
 *.log
 *.pem
 *.orig.*
+
+.claude/
+.planning/
+CLAUDE.md
