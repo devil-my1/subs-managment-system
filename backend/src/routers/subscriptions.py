@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select, desc, or_, func
@@ -34,7 +34,7 @@ async def subscription_monthly_summary(
     Months with no payments return 0.
     """
     try:
-        target_year = year or datetime.utcnow().year
+        target_year = year or datetime.now(timezone.utc).year
 
         res = await db.execute(
             select(
