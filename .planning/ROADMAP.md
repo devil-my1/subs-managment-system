@@ -12,7 +12,7 @@ This milestone hardens the existing SubTracker application against identified se
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Security Hardening** - Fix all identified security vulnerabilities in backend and frontend
+- [x] **Phase 1: Security Hardening** - Fix all identified security vulnerabilities in backend and frontend (completed 2026-04-02)
 - [ ] **Phase 2: Code Quality Fixes** - Resolve production logging, deprecated APIs, error handling, and debug artifacts
 - [ ] **Phase 3: Settings — Account Management** - Users can manage their account (name, email, password, deletion)
 - [ ] **Phase 4: Settings — Notification Preferences** - Users can control email reminder behavior
@@ -85,7 +85,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Security Hardening | 1/4 | In Progress|  |
+| 1. Security Hardening | 4/4 | Complete   | 2026-04-02 |
 | 2. Code Quality Fixes | 0/TBD | Not started | - |
 | 3. Settings — Account Management | 0/TBD | Not started | - |
 | 4. Settings — Notification Preferences | 0/TBD | Not started | - |
