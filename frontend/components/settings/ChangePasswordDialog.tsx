@@ -94,7 +94,7 @@ export default function ChangePasswordDialog({
 			open={open}
 			onOpenChange={handleOpenChange}
 		>
-			<DialogContent className="w-[calc(100vw-2rem)] sm:max-w-[400px] bg-surface-dark border border-border-dark rounded-2xl p-6 py-8">
+			<DialogContent className="shad-settings-dialog">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-semibold text-foreground">
 						Change Password
@@ -110,7 +110,7 @@ export default function ChangePasswordDialog({
 							name="current_password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-[#ab9db9]">
+									<FormLabel className="text-text-muted">
 										Current password
 									</FormLabel>
 									<FormControl>
@@ -131,7 +131,7 @@ export default function ChangePasswordDialog({
 							name="new_password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-[#ab9db9]">
+									<FormLabel className="text-text-muted">
 										New password
 									</FormLabel>
 									<FormControl>
@@ -152,7 +152,7 @@ export default function ChangePasswordDialog({
 							name="confirm_password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-[#ab9db9]">
+									<FormLabel className="text-text-muted">
 										Confirm new password
 									</FormLabel>
 									<FormControl>

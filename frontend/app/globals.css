@@ -19,8 +19,11 @@
 	--color-success: #0bda73;
 	--color-warning: #fa6f38;
 	--color-info: #7fd1ff;
+	--color-destructive: #e03b3b;
+	--color-destructive-hover: #c42e2e;
 	--color-surface: #231b2e;
 	--color-surface-2: #141118;
+	--color-surface-elevated: #302839;
 	--color-border: #342a45;
 	--color-border-strong: #4b3e61;
 	--color-text: #e8e1f2;
@@ -178,6 +181,9 @@ body {
 	}
 	.shad-dialog {
 		@apply rounded-[26px] w-[90%] max-w-100 px-6 py-8;
+	}
+	.shad-settings-dialog {
+		@apply w-[calc(100vw-2rem)] sm:max-w-[400px] bg-surface border border-border rounded-2xl p-6 py-8;
 	}
 	.shad-chart-title {
 		@apply text-white;

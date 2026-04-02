@@ -90,7 +90,7 @@ export default function EditEmailDialog({
 			open={open}
 			onOpenChange={handleOpenChange}
 		>
-			<DialogContent className="w-[calc(100vw-2rem)] sm:max-w-[400px] bg-surface-dark border border-border-dark rounded-2xl p-6 py-8">
+			<DialogContent className="shad-settings-dialog">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-semibold text-foreground">
 						Update Email Address
@@ -106,7 +106,7 @@ export default function EditEmailDialog({
 							name="new_email"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-[#ab9db9]">
+									<FormLabel className="text-text-muted">
 										New email address
 									</FormLabel>
 									<FormControl>
@@ -127,7 +127,7 @@ export default function EditEmailDialog({
 							name="password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-[#ab9db9]">
+									<FormLabel className="text-text-muted">
 										Current password
 									</FormLabel>
 									<FormControl>

@@ -35,31 +35,33 @@ export default function AccountTab() {
 
 	return (
 		<>
-			<SectionCard className="p-6">
-				<h5 className="text-white text-base font-semibold mb-4">Profile</h5>
-				<div className="flex flex-col gap-4">
-					<div className="flex items-center justify-between">
-						<div>
-							<p className="text-[#ab9db9] text-sm">Display name</p>
-							<p className="text-white text-base">{user.name}</p>
+			<SectionCard className="p-6 mt-6">
+				<h5 className="text-white text-base font-semibold mb-5">Profile</h5>
+				<div className="flex flex-col gap-5">
+					<div className="flex items-center justify-between gap-4">
+						<div className="min-w-0">
+							<p className="text-text-muted text-xs uppercase tracking-wider mb-1">Display name</p>
+							<p className="text-white text-sm font-medium truncate">{user.name}</p>
 						</div>
 						<Button
-							variant="ghost"
+							variant="outline"
 							size="sm"
+							className="shrink-0 border-border-strong text-text-muted hover:text-white hover:border-border-strong"
 							onClick={() => setEditNameOpen(true)}
 						>
 							Edit
 						</Button>
 					</div>
-					<Separator />
-					<div className="flex items-center justify-between">
-						<div>
-							<p className="text-[#ab9db9] text-sm">Email address</p>
-							<p className="text-white text-base">{user.email}</p>
+					<Separator className="bg-border" />
+					<div className="flex items-center justify-between gap-4">
+						<div className="min-w-0">
+							<p className="text-text-muted text-xs uppercase tracking-wider mb-1">Email address</p>
+							<p className="text-white text-sm font-medium truncate">{user.email}</p>
 						</div>
 						<Button
-							variant="ghost"
+							variant="outline"
 							size="sm"
+							className="shrink-0 border-border-strong text-text-muted hover:text-white hover:border-border-strong"
 							onClick={() => setEditEmailOpen(true)}
 						>
 							Edit
@@ -68,40 +70,46 @@ export default function AccountTab() {
 				</div>
 			</SectionCard>
 
-			<SectionCard className="mt-6 p-6">
-				<h5 className="text-white text-base font-semibold mb-4">Security</h5>
-				<div className="flex items-center justify-between">
+			<SectionCard className="mt-4 p-6">
+				<h5 className="text-white text-base font-semibold mb-5">Security</h5>
+				<div className="flex items-center justify-between gap-4">
 					<div>
-						<p className="text-[#ab9db9] text-sm">Password</p>
-						<p className="text-white text-base">--------</p>
+						<p className="text-text-muted text-xs uppercase tracking-wider mb-1">Password</p>
+						<p className="text-white text-sm font-medium tracking-widest">••••••••</p>
 					</div>
 					<Button
-						variant="ghost"
+						variant="outline"
 						size="sm"
+						className="shrink-0 border-border-strong text-text-muted hover:text-white hover:border-border-strong"
 						onClick={() => setChangePasswordOpen(true)}
 					>
-						Change Password
+						Change
 					</Button>
 				</div>
 			</SectionCard>
 
 			<SectionCard
 				bordered={false}
-				className="mt-8 p-6 border border-red-500/30"
+				className="mt-8 p-6 border border-destructive/25 bg-destructive/5"
 			>
-				<h5 className="text-red-500 text-base font-semibold mb-4">
-					Danger Zone
-				</h5>
-				<p className="text-[#ab9db9] text-sm mb-4">
-					Permanently delete your account and all associated data. This action
-					cannot be undone.
-				</p>
-				<Button
-					variant="destructive"
-					onClick={() => setDeleteAccountOpen(true)}
-				>
-					Delete Account
-				</Button>
+				<div className="flex items-start justify-between gap-6">
+					<div className="min-w-0">
+						<h5 className="text-destructive text-base font-semibold mb-1">
+							Delete Account
+						</h5>
+						<p className="text-text-muted text-sm">
+							Permanently delete your account and all associated data. This action cannot be undone.
+						</p>
+					</div>
+					<Button
+						variant="destructive"
+						size="sm"
+						className="shrink-0"
+						onClick={() => setDeleteAccountOpen(true)}
+					>
+						Delete
+					</Button>
+				</div>
 			</SectionCard>
 
 			<EditNameDialog

@@ -86,7 +86,7 @@ export default function EditNameDialog({
 			open={open}
 			onOpenChange={handleOpenChange}
 		>
-			<DialogContent className="w-[calc(100vw-2rem)] sm:max-w-[400px] bg-surface-dark border border-border-dark rounded-2xl p-6 py-8">
+			<DialogContent className="shad-settings-dialog">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-semibold text-foreground">
 						Update Display Name
@@ -102,7 +102,7 @@ export default function EditNameDialog({
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-[#ab9db9]">
+									<FormLabel className="text-text-muted">
 										Display name
 									</FormLabel>
 									<FormControl>

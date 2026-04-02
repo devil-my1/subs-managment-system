@@ -58,14 +58,14 @@ export default function DeleteAccountDialog({
 			open={open}
 			onOpenChange={handleOpenChange}
 		>
-			<DialogContent className="w-[calc(100vw-2rem)] sm:max-w-[400px] bg-surface-dark border border-border-dark rounded-2xl p-6 py-8">
+			<DialogContent className="shad-settings-dialog">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-semibold text-foreground">
 						Delete Account
 					</DialogTitle>
 				</DialogHeader>
 				<div className="space-y-4">
-					<p className="text-[#ab9db9] text-sm">
+					<p className="text-text-muted text-sm">
 						This action is permanent and cannot be undone. All your
 						subscriptions, categories, and account data will be permanently
 						deleted.

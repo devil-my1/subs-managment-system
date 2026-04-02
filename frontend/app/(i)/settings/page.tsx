@@ -12,22 +12,22 @@ export default function SettingsPage() {
 					<p className="text-[#ab9db9] text-sm mt-1">Manage your account</p>
 				</div>
 				<Tabs defaultValue="account">
-					<TabsList className="bg-surface-2 rounded-lg p-1 w-full sm:w-auto">
+					<TabsList className="bg-surface-2 border border-border rounded-xl p-1 w-full sm:w-auto gap-1">
 						<TabsTrigger
 							value="account"
-							className="data-[state=active]:bg-primary data-[state=active]:text-white text-text-muted"
+							className="data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm text-text-muted hover:text-white transition-colors rounded-lg px-4"
 						>
 							Account
 						</TabsTrigger>
 						<TabsTrigger
 							value="notifications"
-							className="data-[state=active]:bg-primary data-[state=active]:text-white text-text-muted"
+							className="data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm text-text-muted hover:text-white transition-colors rounded-lg px-4"
 						>
 							Notifications
 						</TabsTrigger>
 						<TabsTrigger
 							value="appearance"
-							className="data-[state=active]:bg-primary data-[state=active]:text-white text-text-muted"
+							className="data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-sm text-text-muted hover:text-white transition-colors rounded-lg px-4"
 						>
 							Appearance
 						</TabsTrigger>

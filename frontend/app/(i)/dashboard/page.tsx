@@ -105,7 +105,6 @@ export default function DashboardPage() {
 	}, [subs, convertToBase, baseCurrency])
 
 	const yearlySpend = monthlySpend.total_spent * 12
-	spendByCat.map(cat => {})
 
 	const handleRowClick = useCallback(
 		(sub: Subscription) => {
@@ -151,7 +150,7 @@ export default function DashboardPage() {
 
 			{error && <p className='text-red-400 text-sm'>{error}</p>}
 
-			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 text-or gap-4'>
+			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
 				<StatCard
 					title='Monthly Spend'
 					value={formatCurrency(monthlySpend.total_spent)}
@@ -161,28 +160,28 @@ export default function DashboardPage() {
 						setBaseCurrency(baseCurrency === "USD" ? "JPY" : "USD")
 					}}
 					badgeText={`in ${baseCurrency}`}
-					badge_className='text-[#ab9db9]'
+					badge_className='text-text-muted'
 				/>
 				<StatCard
 					title='Approximate Yearly Spend'
 					value={formatCurrency(yearlySpend)}
 					icon='calendar_month'
 					badgeText='Based on active subs'
-					badge_className='text-[#ab9db9]'
+					badge_className='text-text-muted'
 				/>
 				<StatCard
 					title='Active Subs'
 					value={activeCount.toString()}
 					icon='layers'
 					badgeText={` + ${getCurrentMonthSubcriptionCount(subs)} new this month`}
-					badge_className='bg-[#7f13ec]/10 text-[#7f13ec]'
+					badge_className='bg-primary/10 text-primary'
 				/>
 				<StatCard
 					title='Renewals (next)'
 					value={`${upcoming.length}`}
 					icon='notification_important'
 					badgeText={`! Next closest renewal in ${diffInDays(getClosestRenewal(upcoming)?.next_renewal_date)} days`}
-					badge_className='bg-[#f54900]/10 text-[#f54900]'
+					badge_className='bg-warning/10 text-warning'
 				/>
 			</div>
 
@@ -224,11 +223,11 @@ export default function DashboardPage() {
 											/>
 											{cat.category_name || "Uncategorized"}
 										</span>
-										<span className='text-[#ab9db9]'>
+										<span className='text-text-muted'>
 											{formatCurrency(cat.total, cat.currency)}
 										</span>
 									</div>
-									<div className='w-full bg-[#141118] rounded-full h-2 overflow-hidden'>
+									<div className='w-full bg-surface-2 rounded-full h-2 overflow-hidden'>
 										<div
 											className='h-full rounded-full '
 											style={{

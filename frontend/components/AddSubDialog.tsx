@@ -203,8 +203,7 @@ export default function AddSubDialog({
 				onSuccess?.()
 			}
 			handleOpenChange(false)
-		} catch (error) {
-			console.error("Failed to save subscription", error)
+		} catch {
 			toast.error("Failed to save subscription")
 		} finally {
 			setSubmitting(false)
@@ -233,12 +232,12 @@ export default function AddSubDialog({
 								<FormItem>
 									<FormLabel
 										htmlFor='title_fld'
-										className='text-[#ab9db9]'
+										className='text-text-muted'
 									>
 										Service name
 									</FormLabel>
 									<FormControl>
-										<div className='flex items-center justify-center px-5 py-2  bg-[#302839] rounded-lg'>
+										<div className='flex items-center justify-center px-5 py-2  bg-surface-elevated rounded-lg'>
 											<Search className='text-slate-500' />
 											<Input
 												id='title_fld'
@@ -265,7 +264,7 @@ export default function AddSubDialog({
 							render={({ field }) => (
 								<FormItem>
 									<div className='flex items-center justify-between mb-1'>
-										<FormLabel className='text-[#ab9db9]'>Category</FormLabel>
+										<FormLabel className='text-text-muted'>Category</FormLabel>
 										<Button
 											variant='ghost'
 											size='sm'
@@ -345,12 +344,12 @@ export default function AddSubDialog({
 									<FormItem>
 										<FormLabel
 											htmlFor='amount_fld'
-											className='text-[#ab9db9]'
+											className='text-text-muted'
 										>
 											Amount
 										</FormLabel>
 										<FormControl>
-											<div className='flex flex-row  items-center justify-center px-5 py-2  bg-[#302839] rounded-lg'>
+											<div className='flex flex-row  items-center justify-center px-5 py-2  bg-surface-elevated rounded-lg'>
 												<DollarSign className='text-slate-500' />
 												<Input
 													id='amount_fld'
@@ -373,12 +372,12 @@ export default function AddSubDialog({
 								name='currency'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel className='text-[#ab9db9]'>Currency</FormLabel>
+										<FormLabel className='text-text-muted'>Currency</FormLabel>
 										<Select
 											onValueChange={field.onChange}
 											defaultValue={field.value}
 										>
-											<div className='flex  items-center justify-center  py-2  bg-[#302839] rounded-lg'>
+											<div className='flex  items-center justify-center  py-2  bg-surface-elevated rounded-lg'>
 												<FormControl>
 													<SelectTrigger className='w-full justify-between border-none outline-none!'>
 														<SelectValue placeholder='Select currency' />
@@ -401,10 +400,10 @@ export default function AddSubDialog({
 							name='billing_period'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className='text-[#ab9db9]'>
+									<FormLabel className='text-text-muted'>
 										Billing period
 									</FormLabel>
-									<div className='grid grid-cols-2 gap-2 rounded-lg px-1 py-2  bg-[#302839] '>
+									<div className='grid grid-cols-2 gap-2 rounded-lg px-1 py-2  bg-surface-elevated '>
 										<Button
 											type='button'
 											variant={field.value === "monthly" ? "default" : "ghost"}
@@ -433,7 +432,7 @@ export default function AddSubDialog({
 							)}
 						/>
 
-						<h2 className='text-[#ab9db9] mb-1'>Timelines</h2>
+						<p className='text-text-muted text-sm font-medium mb-1'>Timelines</p>
 
 						<div className='grid gap-4 md:grid-cols-2'>
 							<FormField
@@ -442,7 +441,7 @@ export default function AddSubDialog({
 								render={({ field }) => (
 									<FormItem>
 										<FormControl>
-											<div className='flex flex-col  px-5 py-2  bg-[#302839] rounded-lg'>
+											<div className='flex flex-col  px-5 py-2  bg-surface-elevated rounded-lg'>
 												<span className='text-xs text-slate-500 font-medium'>
 													Start Date
 												</span>
@@ -469,7 +468,7 @@ export default function AddSubDialog({
 								render={({ field }) => (
 									<FormItem>
 										<FormControl>
-											<div className='flex flex-col  px-5 py-2  bg-[#302839] rounded-lg'>
+											<div className='flex flex-col  px-5 py-2  bg-surface-elevated rounded-lg'>
 												<span className='text-xs text-slate-500 font-medium'>
 													Next Renewal Date
 												</span>
@@ -501,13 +500,13 @@ export default function AddSubDialog({
 								name='description'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel className='text-[#ab9db9]'>
+										<FormLabel className='text-text-muted'>
 											Description
 										</FormLabel>
 										<FormControl>
 											<Textarea
 												rows={4}
-												className='shad-input bg-[#302839] max-h-36'
+												className='shad-input bg-surface-elevated max-h-36'
 												placeholder='Optional notes'
 												{...field}
 											/>
@@ -524,11 +523,11 @@ export default function AddSubDialog({
 									<FormItem>
 										<FormLabel
 											htmlFor='url_fld'
-											className='text-[#ab9db9]'
+											className='text-text-muted'
 										>
 											Service URL
 										</FormLabel>
-										<div className='flex items-center justify-center  bg-[#302839] rounded-lg'>
+										<div className='flex items-center justify-center  bg-surface-elevated rounded-lg'>
 											<Input
 												id='url_fld'
 												className='shad-input'
@@ -552,7 +551,7 @@ export default function AddSubDialog({
 								render={({ field }) => (
 									<FormItem className='flex items-center justify-between rounded-lg'>
 										<div className='space-y-0.5'>
-											<FormLabel className='text-[#ab9db9]'>
+											<FormLabel className='text-text-muted'>
 												Auto renew
 											</FormLabel>
 											<p className='text-xs text-slate-500'>
@@ -574,7 +573,7 @@ export default function AddSubDialog({
 									control={form.control}
 									name='reminder_days_before'
 									render={({ field }) => (
-										<FormItem className='flex items-center justify-between rounded-lg px-5 py-2 bg-[#302839]'>
+										<FormItem className='flex items-center justify-between rounded-lg px-5 py-2 bg-surface-elevated'>
 											<FormLabel className='text-[#ab9db9] flex-1 text-sm'>
 												Days before renewal
 											</FormLabel>
@@ -584,7 +583,7 @@ export default function AddSubDialog({
 														type='button'
 														variant='outline'
 														size='icon-sm'
-														className='btn_control bg-[#191022]/50 hover:bg-[#191022]/70'
+														className='btn_control bg-bg/50 hover:bg-bg/70'
 														disabled={(field.value || 0) <= 0}
 														onClick={() => {
 															const newValue = Math.max(
@@ -608,7 +607,7 @@ export default function AddSubDialog({
 														type='button'
 														variant='outline'
 														size='icon-sm'
-														className='btn_control bg-[#191022]/50 hover:bg-[#191022]/70'
+														className='btn_control bg-bg/50 hover:bg-bg/70'
 														disabled={(field.value || 0) >= 365}
 														onClick={() => {
 															const newValue = Math.max(
