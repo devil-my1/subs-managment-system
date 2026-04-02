@@ -24,7 +24,7 @@ revised: 2026-04-02
 |-----------|------|---------------------|
 | `Tabs` | `components/ui/tabs.tsx` | Settings tab container (D-02) |
 | `Dialog` | `components/ui/dialog.tsx` | Edit name, edit email, change password, delete account dialogs |
-| `Button` | `components/ui/button.tsx` | Edit triggers, submit/cancel, delete account |
+| `Button` | `components/ui/button.tsx` | Edit triggers, submit/dismiss, delete account |
 | `Input` | `components/ui/input.tsx` | Name, email, password fields inside dialogs |
 | `Form` | `components/ui/form.tsx` | Form wrapper with react-hook-form integration |
 | `Label` | `components/ui/label.tsx` | Field labels inside dialogs |
@@ -239,7 +239,7 @@ All dialogs use the existing `.shad-dialog`-derived styling:
 | State | Visual | Behavior |
 |-------|--------|----------|
 | Idle | Ghost "Edit" button next to display name | Opens dialog on click |
-| Dialog open | Input prefilled with current name, focus on input | Submit enabled when value differs from current |
+| Dialog open | Input prefilled with current name, focus on input. Footer: "Discard Changes" (ghost) + "Save Name" (primary) | Submit enabled when value differs from current |
 | Submitting | Button text: "Saving..." + Loader spinner | Input disabled, button disabled |
 | Success | Dialog closes, toast: "Display name updated" | `useGetUser().refresh()` called |
 | Error | Toast: "Failed to update display name. Please try again." | Dialog stays open, input re-enabled |
@@ -249,7 +249,7 @@ All dialogs use the existing `.shad-dialog`-derived styling:
 | State | Visual | Behavior |
 |-------|--------|----------|
 | Idle | Ghost "Edit" button next to email | Opens dialog on click |
-| Dialog open | Two fields: New email (empty), Current password (empty) | Submit enabled when both non-empty |
+| Dialog open | Two fields: New email (empty), Current password (empty). Footer: "Discard Changes" (ghost) + "Update Email" (primary) | Submit enabled when both non-empty |
 | Submitting | Button text: "Updating..." + Loader | Inputs disabled |
 | Success | Dialog closes, toast: "Email updated" | `useGetUser().refresh()` called |
 | Error (wrong password) | Inline error under password field: "Incorrect password" | Dialog stays open |
@@ -261,7 +261,7 @@ All dialogs use the existing `.shad-dialog`-derived styling:
 | State | Visual | Behavior |
 |-------|--------|----------|
 | Idle | Ghost "Change Password" button in Security section | Opens dialog on click |
-| Dialog open | Three fields: Current password, New password, Confirm password | Submit enabled when all non-empty and new === confirm |
+| Dialog open | Three fields: Current password, New password, Confirm password. Footer: "Discard Changes" (ghost) + "Change Password" (primary) | Submit enabled when all non-empty and new === confirm |
 | Validation error | Inline error: "Passwords do not match" under confirm field | Client-side, instant |
 | Submitting | Button text: "Changing..." + Loader | Inputs disabled |
 | Success | Dialog closes, toast: "Password changed" | No logout (D-11) |
@@ -273,7 +273,7 @@ All dialogs use the existing `.shad-dialog`-derived styling:
 | State | Visual | Behavior |
 |-------|--------|----------|
 | Idle | Destructive "Delete Account" button in Danger Zone | Opens dialog on click |
-| Dialog open | Warning text + input for typing "DELETE" + disabled confirm button | Confirm enabled only when input === "DELETE" |
+| Dialog open | Warning text + input for typing "DELETE" + disabled confirm button. Footer: "Keep My Account" (ghost) + "Delete My Account" (destructive, disabled) | Confirm enabled only when input === "DELETE" |
 | Confirm disabled | Confirm button: `opacity-50 cursor-not-allowed` | Cannot submit |
 | Confirm enabled | Confirm button: full opacity, red background | Click triggers deletion |
 | Submitting | Button text: "Deleting..." + Loader | Input disabled, button disabled |
@@ -328,9 +328,14 @@ All dialogs use the existing `.shad-dialog`-derived styling:
 | Change password | `Change Password` |
 | Delete account | `Delete My Account` |
 
-### Cancel Labels
+### Dismiss Labels
 
-All dialogs: `Cancel` button (ghost variant, left side of footer).
+| Dialog | Dismiss Label | Variant |
+|--------|---------------|---------|
+| Edit name | `Discard Changes` | ghost |
+| Edit email | `Discard Changes` | ghost |
+| Change password | `Discard Changes` | ghost |
+| Delete account | `Keep My Account` | ghost |
 
 ### Toast Messages
 
@@ -419,4 +424,5 @@ confirmation: z.literal("DELETE", { errorMap: () => ({ message: "Type DELETE to 
 
 *UI-SPEC created: 2026-04-02*
 *UI-SPEC revised: 2026-04-02 — fixed typography (4 sizes, 2 weights), spacing (removed px-5), copywriting (Save Name), focal point*
+*UI-SPEC revised: 2026-04-02 — replaced generic "Cancel" dismiss labels with context-specific labels per dialog*
 *Source: CONTEXT.md decisions (D-01 through D-15), globals.css tokens, existing component patterns*
