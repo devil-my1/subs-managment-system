@@ -86,3 +86,30 @@ export async function logout() {
 		console.error("Error during logout:", error)
 	}
 }
+
+export async function updateName(name: string) {
+	return apiFetch<{ detail: string }>("/auth/update-name", {
+		method: "PATCH",
+		body: JSON.stringify({ name })
+	})
+}
+
+export async function updateEmail(newEmail: string, password: string) {
+	return apiFetch<{ detail: string }>("/auth/update-email", {
+		method: "PATCH",
+		body: JSON.stringify({ new_email: newEmail, password })
+	})
+}
+
+export async function changePassword(oldPassword: string, newPassword: string) {
+	return apiFetch<{ detail: string }>("/auth/change-password", {
+		method: "POST",
+		body: JSON.stringify({ old_password: oldPassword, new_password: newPassword })
+	})
+}
+
+export async function deleteAccount() {
+	return apiFetch<{ detail: string }>("/auth/delete-account", {
+		method: "DELETE"
+	})
+}
