@@ -13,7 +13,7 @@ This milestone hardens the existing SubTracker application against identified se
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Security Hardening** - Fix all identified security vulnerabilities in backend and frontend (completed 2026-04-02)
-- [ ] **Phase 2: Code Quality Fixes** - Resolve production logging, deprecated APIs, error handling, and debug artifacts
+- [x] **Phase 2: Code Quality Fixes** - Resolve production logging, deprecated APIs, error handling, and debug artifacts (completed 2026-04-02)
 - [ ] **Phase 3: Settings — Account Management** - Users can manage their account (name, email, password, deletion)
 - [ ] **Phase 4: Settings — Notification Preferences** - Users can control email reminder behavior
 - [ ] **Phase 5: Settings — Display & Appearance** - Users can customize currency, date format, timezone, and theme
@@ -45,8 +45,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Backend fixes: INFO logging (FIX-01), datetime.utcnow deprecation (FIX-02), Redis connection fallback (FIX-03)
-- [ ] 02-02-PLAN.md — Frontend fixes: remove AuthForm console.log (FIX-04), remove console.error from action files (FIX-05)
+- [x] 02-01-PLAN.md — Backend fixes: INFO logging (FIX-01), datetime.utcnow deprecation (FIX-02), Redis connection fallback (FIX-03)
+- [x] 02-02-PLAN.md — Frontend fixes: remove AuthForm console.log (FIX-04), remove console.error from action files (FIX-05)
 
 ### Phase 3: Settings — Account Management
 **Goal**: Users can view and manage their account identity and permanently delete their account
@@ -90,7 +90,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Security Hardening | 4/4 | Complete   | 2026-04-02 |
-| 2. Code Quality Fixes | 0/2 | Not started | - |
+| 2. Code Quality Fixes | 2/2 | Complete   | 2026-04-02 |
 | 3. Settings — Account Management | 0/TBD | Not started | - |
 | 4. Settings — Notification Preferences | 0/TBD | Not started | - |
 | 5. Settings — Display & Appearance | 0/TBD | Not started | - |

@@ -20,11 +20,11 @@
 
 ### Code Quality Fixes
 
-- [ ] **FIX-01**: Production logging uses INFO level (not DEBUG)
-- [ ] **FIX-02**: `datetime.utcnow()` replaced with `datetime.now(timezone.utc)`
-- [ ] **FIX-03**: Redis connection failure falls back to DB lookup (no hard 500 errors)
-- [ ] **FIX-04**: Debug `console.log(user)` removed from AuthForm
-- [ ] **FIX-05**: API action functions do not double-log errors
+- [x] **FIX-01**: Production logging uses INFO level (not DEBUG)
+- [x] **FIX-02**: `datetime.utcnow()` replaced with `datetime.now(timezone.utc)`
+- [x] **FIX-03**: Redis connection failure falls back to DB lookup (no hard 500 errors)
+- [x] **FIX-04**: Debug `console.log(user)` removed from AuthForm
+- [x] **FIX-05**: API action functions do not double-log errors
 
 ### Settings Page — Account
 
@@ -95,11 +95,11 @@
 | SEC-06 | Phase 1 | Complete |
 | SEC-07 | Phase 1 | Pending |
 | SEC-08 | Phase 1 | Pending |
-| FIX-01 | Phase 2 | Pending |
-| FIX-02 | Phase 2 | Pending |
-| FIX-03 | Phase 2 | Pending |
-| FIX-04 | Phase 2 | Pending |
-| FIX-05 | Phase 2 | Pending |
+| FIX-01 | Phase 2 | Complete |
+| FIX-02 | Phase 2 | Complete |
+| FIX-03 | Phase 2 | Complete |
+| FIX-04 | Phase 2 | Complete |
+| FIX-05 | Phase 2 | Complete |
 | SETT-01 | Phase 3 | Pending |
 | SETT-02 | Phase 3 | Pending |
 | SETT-03 | Phase 3 | Pending |
