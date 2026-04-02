@@ -1,5 +1,5 @@
 from random import randint
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.utils.cache import cache_get_json, cache_set_json, cache_delete_key, cache_delete_prefix
@@ -18,7 +18,9 @@ from src.schemas.auth import (
 )
 from src.schemas.common import Message
 from src.core.security import hash_password, verify_password, create_access_token
+from src.core.config import settings
 from src.api.deps import get_current_user
+from src.core.limiter import limiter
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 RESET_TTL = 15 * 60  # seconds
@@ -30,7 +32,8 @@ def _reset_key(email: str) -> str:
 
 
 @router.post("/register", response_model=AuthResponse)
-async def register(data: SignUp, db: AsyncSession = Depends(get_db)):
+@limiter.limit("5/minute")
+async def register(request: Request, data: SignUp, response: Response, db: AsyncSession = Depends(get_db)):
     try:
         existing = await db.execute(select(User).where(User.email == data.email))
         if existing.scalar_one_or_none():
@@ -44,7 +47,17 @@ async def register(data: SignUp, db: AsyncSession = Depends(get_db)):
         await db.refresh(user)
         auth_logger.info("user_registered", extra={
                          "user_id": str(user.id), "email": user.email})
-        return AuthResponse(access_token=create_access_token(str(user.id)), user_name=user.name)
+        token = create_access_token(str(user.id))
+        response.set_cookie(
+            key="token",
+            value=token,
+            httponly=True,
+            secure=settings.COOKIE_SECURE,
+            samesite="lax",
+            max_age=settings.ACCESS_TOKEN_MINUTES * 60,
+            path="/"
+        )
+        return AuthResponse(user_name=user.name, user_id=str(user.id))
     except HTTPException:
         raise
     except TypeError:
@@ -64,7 +77,8 @@ async def me(user: User = Depends(get_current_user)):
 
 
 @router.post("/login", response_model=AuthResponse)
-async def login(data: SignIn, db: AsyncSession = Depends(get_db)):
+@limiter.limit("10/minute")
+async def login(request: Request, data: SignIn, response: Response, db: AsyncSession = Depends(get_db)):
     try:
         res = await db.execute(select(User).where(User.email == data.email))
         user = res.scalar_one_or_none()
@@ -73,7 +87,17 @@ async def login(data: SignIn, db: AsyncSession = Depends(get_db)):
                 status_code=401, detail="Incorrect email or password. Please try again.")
         auth_logger.info("user_logged_in", extra={
                          "user_id": str(user.id), "email": user.email})
-        return AuthResponse(access_token=create_access_token(str(user.id)), user_name=user.name)
+        token = create_access_token(str(user.id))
+        response.set_cookie(
+            key="token",
+            value=token,
+            httponly=True,
+            secure=settings.COOKIE_SECURE,
+            samesite="lax",
+            max_age=settings.ACCESS_TOKEN_MINUTES * 60,
+            path="/"
+        )
+        return AuthResponse(user_name=user.name, user_id=str(user.id))
     except HTTPException:
         raise
     except Exception as e:
@@ -82,8 +106,23 @@ async def login(data: SignIn, db: AsyncSession = Depends(get_db)):
             status_code=500, detail="Could not sign you in. Please try again later.") from e
 
 
+@router.post("/logout", response_model=Message)
+async def logout(response: Response):
+    response.set_cookie(
+        key="token",
+        value="",
+        max_age=0,
+        httponly=True,
+        secure=settings.COOKIE_SECURE,
+        samesite="lax",
+        path="/"
+    )
+    return {"detail": "Logged out successfully"}
+
+
 @router.post("/request-password-reset", response_model=Message)
-async def request_password_reset(payload: PasswordResetRequest, db=Depends(get_db)):
+@limiter.limit("5/minute")
+async def request_password_reset(request: Request, payload: PasswordResetRequest, db=Depends(get_db)):
     email = payload.email
     key = _reset_key(email)
     try:
@@ -156,7 +195,8 @@ async def confirm_password_reset(payload: PasswordResetConfirm, db=Depends(get_d
 
 
 @router.post("/verify-password-reset", response_model=Message)
-async def verify_password_reset(payload: PasswordResetVerify):
+@limiter.limit("5/minute")
+async def verify_password_reset(request: Request, payload: PasswordResetVerify):
     email = payload.email
     key = _reset_key(email)
     try:
@@ -205,20 +245,26 @@ async def change_password(
     db: AsyncSession = Depends(get_db),
 ):
     try:
-        if not verify_password(payload.old_password, user.password_hash):
+        # Fetch fresh user from DB to get password_hash (cache does not store it)
+        res = await db.execute(select(User).where(User.id == user.id))
+        db_user = res.scalar_one_or_none()
+        if not db_user:
+            raise HTTPException(status_code=401, detail="User not found")
+
+        if not verify_password(payload.old_password, db_user.password_hash):
             raise HTTPException(
                 status_code=401, detail="Your current password is incorrect. Please try again.")
         if payload.old_password == payload.new_password:
             raise HTTPException(
                 status_code=400, detail="Your new password must be different from the current one.")
 
-        user.password_hash = hash_password(payload.new_password)
+        db_user.password_hash = hash_password(payload.new_password)
         await db.commit()
-        await cache_delete_key(f"user:{user.id}")
-        await cache_delete_prefix(_reset_key(user.email))
-        await db.refresh(user)
+        await cache_delete_key(f"user:{db_user.id}")
+        await cache_delete_prefix(_reset_key(db_user.email))
+        await db.refresh(db_user)
         auth_logger.info("password_change_success", extra={
-                         "user_id": str(user.id), "email": user.email})
+                         "user_id": str(db_user.id), "email": db_user.email})
         return {"detail": "Password change successful"}
     except HTTPException:
         raise
