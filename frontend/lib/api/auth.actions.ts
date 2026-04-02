@@ -5,15 +5,14 @@ import { apiFetch } from "./base.actions"
  * Login a user with email and password.
  * @param email - The user's email.
  * @param password - The user's password.
- * @returns A promise that resolves to the access token string.
+ * @returns A promise that resolves to the user name string.
  */
 export async function login(email: string, password: string) {
-	const data = await apiFetch<{ access_token: string }>("/auth/login", {
+	const data = await apiFetch<{ user_name: string; user_id: string }>("/auth/login", {
 		method: "POST",
 		body: JSON.stringify({ email, password })
 	})
-	setToken(data.access_token)
-	return data.access_token
+	return data.user_name
 }
 
 /**
@@ -28,14 +27,13 @@ export async function register({
 	password,
 	name
 }: UserSignUp): Promise<string> {
-	const data = await apiFetch<{ access_token: string; user_name: string }>(
+	const data = await apiFetch<{ user_name: string; user_id: string }>(
 		"/auth/register",
 		{
 			method: "POST",
 			body: JSON.stringify({ email, password, name })
 		}
 	)
-	setToken(data.access_token)
 	return data.user_name
 }
 
@@ -64,24 +62,10 @@ export async function confirmPasswordReset(params: {
 	})
 }
 
-/** Set the authentication token in cookies.
- * @param token - The access token to set.
- */
-export function setToken(token: string) {
-	if (typeof document === "undefined") return
-	document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`
-}
-
-/** Clear the authentication token from cookies. */
-export function clearToken() {
-	if (typeof document === "undefined") return
-	document.cookie = "token=; path=/; max-age=0;"
-}
-
-/** Logout the current user by clearing the authentication token. */
+/** Logout the current user by calling the backend logout endpoint which clears the HttpOnly cookie. */
 export async function logout() {
 	try {
-		clearToken()
+		await apiFetch<{ detail: string }>("/auth/logout", { method: "POST" })
 	} catch (error) {
 		console.error("Error during logout:", error)
 	}
