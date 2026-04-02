@@ -57,7 +57,12 @@ Plans:
   2. User can change their email address and subsequent login requires the new email
   3. User can change their password by providing their current password — old password no longer works
   4. User can delete their account via a confirmation dialog — after deletion, login with those credentials fails
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Backend endpoints + schemas + integration tests + frontend API action functions (SETT-01, SETT-02, SETT-03, SETT-04)
+- [ ] 03-02-PLAN.md — Frontend Settings page with tabbed layout + Account tab + all four dialog components (SETT-01, SETT-02, SETT-03, SETT-04)
+
 **UI hint**: yes
 
 ### Phase 4: Settings — Notification Preferences
@@ -91,6 +96,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Security Hardening | 4/4 | Complete   | 2026-04-02 |
 | 2. Code Quality Fixes | 2/2 | Complete   | 2026-04-02 |
-| 3. Settings — Account Management | 0/TBD | Not started | - |
+| 3. Settings — Account Management | 0/2 | Planning complete | - |
 | 4. Settings — Notification Preferences | 0/TBD | Not started | - |
 | 5. Settings — Display & Appearance | 0/TBD | Not started | - |
