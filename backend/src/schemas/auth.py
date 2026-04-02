@@ -41,3 +41,12 @@ class PasswordResetVerify(BaseModel):
 class ChangePassword(BaseModel):
     old_password: str = Field(min_length=8, max_length=128)
     new_password: str = Field(min_length=8, max_length=128)
+
+
+class UpdateName(BaseModel):
+    name: str = Field(min_length=1, max_length=100)
+
+
+class UpdateEmail(BaseModel):
+    new_email: EmailStr
+    password: str = Field(min_length=8, max_length=128)

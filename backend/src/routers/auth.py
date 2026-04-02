@@ -15,6 +15,8 @@ from src.schemas.auth import (
     PasswordResetRequest,
     PasswordResetVerify,
     ChangePassword,
+    UpdateName,
+    UpdateEmail,
 )
 from src.schemas.common import Message
 from src.core.security import hash_password, verify_password, create_access_token
@@ -74,6 +76,68 @@ async def register(request: Request, data: SignUp, response: Response, db: Async
 async def me(user: User = Depends(get_current_user)):
     # Some legacy users may have null name; fallback to a sensible default
     return UserMe(id=str(user.id), email=user.email, name=user.name or "User")
+
+
+@router.patch("/update-name", response_model=Message)
+async def update_name(
+    payload: UpdateName,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    try:
+        res = await db.execute(select(User).where(User.id == user.id))
+        db_user = res.scalar_one_or_none()
+        if not db_user:
+            raise HTTPException(status_code=401, detail="User not found")
+        db_user.name = payload.name
+        await db.commit()
+        await cache_delete_key(f"user:{db_user.id}")
+        auth_logger.info("name_updated", extra={"user_id": str(db_user.id)})
+        return {"detail": "Display name updated"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        auth_logger.exception("name_update_error", extra={
+                              "user_id": str(user.id) if user else None})
+        raise HTTPException(
+            status_code=500, detail="Could not update name. Please try again later.") from e
+
+
+@router.patch("/update-email", response_model=Message)
+async def update_email(
+    payload: UpdateEmail,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    try:
+        # Fetch fresh user from DB (cache may not store password_hash per SEC-03)
+        res = await db.execute(select(User).where(User.id == user.id))
+        db_user = res.scalar_one_or_none()
+        if not db_user:
+            raise HTTPException(status_code=401, detail="User not found")
+
+        if not verify_password(payload.password, db_user.password_hash):
+            raise HTTPException(
+                status_code=401, detail="Incorrect password")
+
+        existing = await db.execute(select(User).where(User.email == payload.new_email))
+        if existing.scalar_one_or_none():
+            raise HTTPException(
+                status_code=409, detail="An account with this email already exists")
+
+        db_user.email = payload.new_email
+        await db.commit()
+        await cache_delete_key(f"user:{db_user.id}")
+        auth_logger.info("email_updated", extra={
+                         "user_id": str(db_user.id), "new_email": payload.new_email})
+        return {"detail": "Email updated"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        auth_logger.exception("email_update_error", extra={
+                              "user_id": str(user.id) if user else None})
+        raise HTTPException(
+            status_code=500, detail="Could not update email. Please try again later.") from e
 
 
 @router.post("/login", response_model=AuthResponse)
