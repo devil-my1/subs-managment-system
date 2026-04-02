@@ -4,6 +4,7 @@ phase: "03"
 phase_name: Settings — Account Management
 design_system: shadcn (new-york style, Tailwind v4, CSS variables)
 created: 2026-04-02
+revised: 2026-04-02
 ---
 
 # UI Design Contract: Phase 03 — Settings Account Management
@@ -55,7 +56,7 @@ Scale: 8-point grid (multiples of 4px).
 | `p-6` | 24px | SectionCard internal padding |
 | `p-6 py-8` | 24px/32px | Dialog content padding (matches existing `.shad-dialog` pattern) |
 | `mt-8` | 32px | Danger Zone top margin (visual separation) |
-| `px-5` | 20px | Page horizontal padding (matches Shell container) |
+| `px-4 sm:px-6 md:px-8` | 16/24/32px | Page horizontal padding (matches Shell container breakpoints) |
 
 **Exceptions:** None. All values are multiples of 4.
 
@@ -67,14 +68,16 @@ Inherits from `globals.css` typography classes. This phase uses exactly these:
 
 | Role | Class | Size | Weight | Line-height | Usage |
 |------|-------|------|--------|-------------|-------|
-| Page heading | `h2` | 24px | 700 (bold) | 36px (1.5) | "Settings" page title |
+| Page heading | `h2` | 24px | 600 (semibold) | 36px (1.5) | "Settings" page title |
 | Section heading | `h5` | 16px | 600 (semibold) | 24px (1.5) | "Profile", "Security", "Danger Zone" section titles |
 | Body | `body-2` | 14px | 400 (normal) | 20px (1.43) | Field values, descriptions, placeholder text |
 | Caption | `caption` | 12px | 400 (normal) | 16px (1.33) | Helper text beneath fields, "Coming soon" placeholder |
 
-**Font weights used:** 400 (normal), 600 (semibold). Bold (700) only for the page heading.
+**Font sizes used:** 4 total — 12px, 14px, 16px, 24px.
 
-**Dialog titles:** `text-xl font-bold text-foreground` (20px, 700) — matches existing `AddSubDialog` pattern.
+**Font weights used:** 2 total — 400 (normal) and 600 (semibold).
+
+**Dialog titles:** `text-2xl font-semibold text-foreground` (24px, 600) — same size as the page heading, applied via inline classes rather than the `h2` global style.
 
 ---
 
@@ -94,7 +97,7 @@ All colors reference existing CSS custom properties from `globals.css`.
 
 | Token | Hex | Reserved For |
 |-------|-----|-------------|
-| `--color-primary` | `#7f13ec` | Primary CTA buttons (Save, Update) |
+| `--color-primary` | `#7f13ec` | Primary CTA buttons (Save Name, Update Email) |
 | `--color-primary-hover` | `#680ec3` | Primary button hover state |
 | `text-red-500` | `#ef4444` | Danger Zone border, Delete Account button text, destructive toast |
 | `border-red-500/30` | `#ef4444` at 30% | Danger Zone card border |
@@ -109,7 +112,7 @@ All colors reference existing CSS custom properties from `globals.css`.
 
 The `--color-primary` (`#7f13ec`) accent is reserved ONLY for:
 1. Active tab trigger background
-2. Primary action buttons ("Save", "Update Name", "Update Email", "Change Password")
+2. Primary action buttons ("Save Name", "Update Email", "Change Password")
 3. Focus ring on form inputs (`focus-within:border-primary-500`)
 
 Red accent (`text-red-500`, `border-red-500`) is reserved ONLY for:
@@ -121,11 +124,15 @@ Red accent (`text-red-500`, `border-red-500`) is reserved ONLY for:
 
 ## 5. Layout
 
+### Visual Focal Point
+
+Primary focal point: the "Settings" page heading (24px semibold) and the active Account tab trigger draw the eye first. The Profile section card is the dominant content block, anchoring the user's attention to their identity fields (name and email) as the starting interaction point.
+
 ### Page Structure
 
 ```
 Shell
-  +-- Page Header: "Settings" (h2) + subtitle "Manage your account"
+  +-- Page Header: "Settings" (h2, font-semibold) + subtitle "Manage your account"
   +-- Tabs (defaultValue="account")
         +-- TabsList
         |     +-- TabsTrigger "Account"
@@ -300,7 +307,7 @@ All dialogs use the existing `.shad-dialog`-derived styling:
 | Name label | `Display name` |
 | Email label | `Email address` |
 | Password label | `Password` |
-| Password display | `••••••••` |
+| Password display | `--------` |
 | Coming soon placeholder | `Coming soon.` |
 
 ### Dialog Titles
@@ -316,7 +323,7 @@ All dialogs use the existing `.shad-dialog`-derived styling:
 
 | Dialog | CTA Label |
 |--------|-----------|
-| Edit name | `Save` |
+| Edit name | `Save Name` |
 | Edit email | `Update Email` |
 | Change password | `Change Password` |
 | Delete account | `Delete My Account` |
@@ -411,4 +418,5 @@ confirmation: z.literal("DELETE", { errorMap: () => ({ message: "Type DELETE to 
 ---
 
 *UI-SPEC created: 2026-04-02*
+*UI-SPEC revised: 2026-04-02 — fixed typography (4 sizes, 2 weights), spacing (removed px-5), copywriting (Save Name), focal point*
 *Source: CONTEXT.md decisions (D-01 through D-15), globals.css tokens, existing component patterns*
