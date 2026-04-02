@@ -85,7 +85,6 @@ function AuthFormContent({ type }: { type: FormType }) {
 							password: values.password
 						})
 					: await login(values.email, values.password)
-			console.log(user)
 			if (!user) {
 				return toast(
 					<p className='body-2 text-white'>
