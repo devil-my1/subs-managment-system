@@ -61,7 +61,7 @@ Plans:
 
 Plans:
 - [x] 03-01-PLAN.md — Backend endpoints + schemas + integration tests + frontend API action functions (SETT-01, SETT-02, SETT-03, SETT-04)
-- [ ] 03-02-PLAN.md — Frontend Settings page with tabbed layout + Account tab + all four dialog components (SETT-01, SETT-02, SETT-03, SETT-04)
+- [x] 03-02-PLAN.md — Frontend Settings page with tabbed layout + Account tab + all four dialog components (SETT-01, SETT-02, SETT-03, SETT-04)
 
 **UI hint**: yes
 
